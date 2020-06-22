@@ -58,5 +58,3 @@ def make_bar_plot(donor_filename, recipient_filename, parse_type, min_AF = 0.03,
     
     plt.savefig('%s_%s_allele_freq.png'%(donor_filename, recipient_filename), dpi=fig.dpi, bbox_inches='tight')
     plt.show()
-
-make_bar_plot("COV-20200312-P2-G03-N_S39_bwamem.bam.lowfreq.vcf","COV-20200312-P2-H01-N_S34_bwamem.bam.lowfreq.vcf", multiallelic)
