@@ -9,5 +9,3 @@ def visualize_tree(path_to_file):
     tree = toytree.tree(rax.trees.bipartitions)
     draw = tree.root(wildcard="prz")
     draw.draw(tip_labels_align=True, node_labels="support")
-
-visualize_tree(r"\Users\sackb\Documents\COVID-19\parnsp.mfa")
