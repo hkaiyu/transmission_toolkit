@@ -1,3 +1,5 @@
+import pickle as cPickle
+
 import ipyrad.analysis as ipa
 import toytree
 
