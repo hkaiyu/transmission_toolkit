@@ -1,84 +1,97 @@
 import vcf
 
-def parse_multiallelic(donor_filename, recipient_filename, min_AF = 0.03, max_AF = 0.5):
+def parse_multiallelic(donor_filename, recipient_filename, site_depth_req, min_AF = 0.03, max_AF = 0.5):
     """
     Extracts low frequency variant data from VCF donor and recipient files and stores data in dictionary.
-
     Inputs:
     > donor_filename - a string representation of the name of the donor's vcf file
     > recipient_filename - a string representation of the name of the recipient's vcf file
-
+    > site_depth_req - minimum number of reads at a specific site that support a specific variant
+    > min_AF - 
+    > max_AF - 
     Output:
         Returns a tuple with the first element as a dictionary that stores all of the data needed for BB_Bottleneck software input and
         a donor-recipient allele frequency bar chart, and the second element being an integer representing the number of shared variants
     """
-    final_data = {} #{pos: {var: [donor freq, recip freq]}}
-    reference_alleles = {} #{pos: reference}
-
+    final_data = [] #(pos, var, donor freq, recip freq)
+    reference = (0, 0) #(allele, frequency)
+    previous_pos = None
     donor_data = vcf.Reader(open(donor_filename, 'r'))
     for record in donor_data:
-        freq = record.INFO['AF']
-        if freq >= min_AF and freq <= max_AF:
-            pos, var = record.POS, str(record.ALT[0])
-            if pos in final_data:
-                final_data[pos][var] = [freq, 0.0]
-            else:
-                final_data[pos] = {var: [freq, 0.0]}
-            reference_alleles[pos] = str(record.REF[0])
+        site_depth = record.INFO['DP4'][2] + record.INFO['DP4'][3]
+        total_depth = record.INFO['DP4'][0] + record.INFO['DP4'][1]
+        freq = site_depth/total_depth
+        if previous_pos != record.POS and reference <= 0.5:
+            final_data.append(previous_pos, reference[0], reference[1])
+        if previous_pos != record.POS:
+            reference = (record.REF, (1 - freq))
+        if previous_pos == record.POS:
+            reference -= freq
+        
+        #meets minimums to not be error
+        if freq >= min_AF and site_depth >= site_depth_req:
+            if freq <= max_AF:
+                pos, var = record.POS, str(record.ALT[0])
+                final_data.append((pos, var, freq))
 
-    for pos in donor_data:
-        total = 0
-        for freq in final_data[pos].values():
-            total += freq[0]
-        final_data[pos][reference_alleles[pos]] = 1 - total
+    
 
     recipient_data = vcf.Reader(open(recipient_filename, 'r'))
     shared_count = 0
     for record in recipient_data:
+        site_depth = record.INFO['DP4'][2] + record.INFO['DP4'][3]
+        total_depth = record.INFO['DP4'][0] + record.INFO['DP4'][1]
+        freq = site_depth/total_depth
         pos, var = record.POS, str(record.ALT[0])
-        if pos in final_data and var in final_data[pos]:
-            shared_count += 1
-            final_data[pos][var][1] = record.INFO['AF']
+        for item in final_data:
+            if pos == item[0] and var == item[1]:
+                shared_count += 1
+                item[3] = freq
     
     return (final_data, shared_count)
 
-def parse_biallelic(donor_filename, recipient_filename, min_AF = 0.03, max_AF = 0.5):
+def parse_biallelic(donor_filename, recipient_filename, site_depth_req, min_AF = 0.03, max_AF = 0.5):
     """
     Extracts low frequency variant data from VCF donor and recipient files and stores data in dictionary.
-
     Inputs:
     > donor_filename - a string representation of the name of the donor's vcf file
     > recipient_filename - a string representation of the name of the recipient's vcf file
-
     Output:
         Returns a tuple with the first element as a dictionary that stores all of the data needed for BB_Bottleneck software input and
         a donor-recipient allele frequency bar chart, and the second element being an integer representing the number of shared variants
     """
-    final_data = {}
-
+    final_data = [] #(pos, var, donor freq, recip freq)
+    reference = (0, 0)#(allele, frequency)
+    previous_pos = None
     donor_data = vcf.Reader(open(donor_filename, 'r'))
     for record in donor_data:
-        freq = record.INFO['AF']
-        if freq >= min_AF and freq <= max_AF:
-            pos, var = record.POS, str(record.ALT[0]) 
-            if pos in final_data:
-                old_var = list(final_data[pos].keys())[0] #only one item per position bc biallelic
-                if freq > final_data[pos][old_var][0]: #if higher freq. lfv found at this site, change old lfv
-                    del final_data[pos][old_var]
-                    final_data[pos][var] = [freq, 0.0]
-            else:
-                final_data[pos] = {var: [freq, 0.0]}
-                
+        site_depth = record.INFO['DP4'][2] + record.INFO['DP4'][3]
+        total_depth = record.INFO['DP4'][0] + record.INFO['DP4'][1]
+        freq = site_depth/total_depth
+        if previous_pos != record.POS and reference <= 0.5:
+            final_data.append(previous_pos, reference[0], reference[1])
+        if previous_pos != record.POS:
+            reference = (record.REF, (1 - freq))
+        if previous_pos == record.POS:
+            reference -= freq
+        #meets minimums to not be error
+        if freq >= min_AF and site_depth >= site_depth_req:
+            if freq <= max_AF:
+                pos, var = record.POS, str(record.ALT[0])
+                final_data.append((pos, var, freq))
+
+    
+
     recipient_data = vcf.Reader(open(recipient_filename, 'r'))
     shared_count = 0
     for record in recipient_data:
+        site_depth = record.INFO['DP4'][2] + record.INFO['DP4'][3]
+        total_depth = record.INFO['DP4'][0] + record.INFO['DP4'][1]
+        freq = site_depth/total_depth
         pos, var = record.POS, str(record.ALT[0])
-        if pos in final_data and var in final_data[pos]:
-            shared_count += 1
-            final_data[pos][var][1] = record.INFO['AF']
+        for item in final_data:
+            if pos == item[0] and var == item[1]:
+                shared_count += 1
+                item[3] = freq
     
     return (final_data, shared_count)
-
-
-
-
