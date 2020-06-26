@@ -17,6 +17,6 @@ def write_bb_input_files(donor_filename, recipient_filename, parse_type, min_AF 
     file1 = open("new_%s_%s_thred%i_complete_nofilter_bbn.txt"%(fname1, fname2, shared_count), "w") #rmr to remove 'new'
     for pos in vcf_data:
         for var in vcf_data[pos]:
-            file1.write(str(vcf_data[pos][var][0])+'\t'+str(vcf_data[pos][var][1])+'\n')
+            file1.write(str(vcf_data[pos][var][0])+'\t'+str(vcf_data[pos][var][2])+'\n')
     file1.close()
 
