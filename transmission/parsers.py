@@ -144,7 +144,7 @@ def parse_biallelic(donor_filename, recipient_filename, allele_depth_req = 1, mi
     shared_count = 0
     for record in recipient_data:
         allele_depth = record.INFO['DP4'][2] + record.INFO['DP4'][3]
-        total_depth = record.INFO['DP4'][0] + record.INFO['DP4'][1]
+        total_depth = record.INFO['DP4'][0] + record.INFO['DP4'][1] + record.INFO['DP4'][2] + record.INFO['DP4'][3]
         freq = allele_depth/total_depth
         pos, var = record.POS, str(record.ALT[0])
         for position in final_data:
