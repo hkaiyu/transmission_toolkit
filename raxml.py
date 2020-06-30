@@ -6,7 +6,7 @@ import shutil
 A module containing functions relating to RAxML.
 """
 
-def run(self, filename, label='raxml', outputDir='raxml-trees', customCMD = ''): 
+def run(filename, label='raxml', outputDir='raxml-trees', customCMD = ''): 
     """
     A function for running RAxMl. Writes outputs to outputDir.
 
@@ -37,4 +37,3 @@ def run(self, filename, label='raxml', outputDir='raxml-trees', customCMD = ''):
     msg = f'Ran RAxML on {filename} and stored files in directory: {outputDir}' + '.'
     print(msg)
         
-
