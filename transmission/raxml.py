@@ -1,40 +1,38 @@
+"""
+A module containing functions for running RAxML
+"""
+#Standard library imports
 import os
 import subprocess
 import shutil
 
-"""
-A module containing functions relating to RAxML.
-"""
-
-def run(self, filename, label='raxml', outputDir='raxml-trees', customCMD = ''): 
+def run_raxml(filename, label='raxml', output_dir='raxml-trees', custom_cmd=''):
     """
-    A function for running RAxMl. Writes outputs to outputDir.
+    A function for running RAxMl. Writes outputs to output_dir.
 
     Args:
         filename (str): the name of the file that RAxMl will analyze
-        label (str, optional): The label tagged at the end of the output files. Defaults to 'raxml'.
-        outputDir (str, optional): Name of the folder in which RAxML will output to. Defaults to 'raxml-trees'.
-        customCMD (str, optional): A custom RAxML command. Defaults to ''.
+        label (str, optional): The label tagged at the end of the output files.
+        output_dir (str, optional): Name of the folder in which RAxML will output to.
+        custom_cmd (str, optional): A custom RAxML command.
     """
 
     # Remove directory if it exists
-    if os.path.exists(outputDir):
-        shutil.rmtree(outputDir)
-    os.mkdir(outputDir)
+    if os.path.exists(output_dir):
+        shutil.rmtree(output_dir)
+    os.mkdir(output_dir)
 
-    if customCMD:
-        # If user specifies command, then we run that in command line
-        cmnd = customCMD
-    
+    # If user specifies command, then we run that in command line
+    if custom_cmd:
+        cmnd = custom_cmd
+
+    # Otherwise, run RaxML with default arguments
     else:
-        # Otherwise, run RaxML with default arguments
         path = os.path.join(os.getcwd(), filename)
-        cmnd = f"raxmlHPC -s {path} -w {os.path.join(os.getcwd(), outputDir)} -n {label} -m GTRGAMMA -p 20"
+        cmnd = f"raxmlHPC -s {path} -w {os.path.join(os.getcwd(), output_dir)} \
+            -n {label} -m GTRGAMMA -p 20"
+    subprocess.run(cmnd.split(), check=True)
 
-    subprocess.run(cmnd.split())
-    
     # Print out when finished
-    msg = f'Ran RAxML on {filename} and stored files in directory: {outputDir}' + '.'
+    msg = f'Ran RAxML on {filename} and stored files in directory: {output_dir}' + '.'
     print(msg)
-        
-

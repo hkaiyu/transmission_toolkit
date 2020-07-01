@@ -1,11 +1,14 @@
-import toytree
-import toyplot
-import numpy as np
-
-
 """
 Visualization classes for viewing data as charts, trees, etc..
 """
+#Standard library imports
+import os
+
+#Third party imports
+import numpy as np
+import toytree
+import toyplot
+import toyplot.svg
 
 class Phylo:
     """
@@ -14,55 +17,72 @@ class Phylo:
     def __init__(self, newick):
         self._newick = newick
         self.tree = toytree.tree(newick)
-        
+
     def get_clades(self):
         pass
 
-    def color_clades(self, cladeColors=''):
+    def color_clades(self):
         pass
 
-    def _colored_heatmap_matrix(self, vcf_files):
+    def _colored_heatmap_matrix(self):
         """
-        Private static method for generating the matrix needed to make the heatmap.
+        Method for generating the matrix needed to make the heatmap.
         """
-        pass
-    
-    def draw_tree(self):
         pass
 
-    def draw_heatmap_tree(self, scaleLength=2, w=500, h=350, heatmapColors="BlueRed"): #eventually add cladeColors
+    def draw_tree(self, output_dir="TreeFigures", name="tree-plot", custom_style=dict()):
+        """
+        Draws a phylogenetic tree and saves the figure in output_dir
+
+        Args:
+            output_dir (str, optional): [description]. Defaults to "TreeFigures".
+            name (str, optional): [description]. Defaults to "tree-plot".
+            custom_style (dict, optional): [description]. Defaults to {}.
+        """
+
+        filename = name + '.html'
+
+        # If custom style specified, use it
+        if custom_style:
+            style = custom_style
+
+        # Otherwise, use default style
+        else:
+            style = {
+                "height": 875,
+                "width": 1400,
+                "layout": 'd',
+                "edge_type": 'p',
+                "edge_style": {
+                    "stroke": toytree.colors[2],
+                    "stroke-width": 2.5},
+                "tip_labels_align": True,
+                "tip_labels_style": {
+                    "font-size": "10px"},
+                "node_labels": False,
+                "node_sizes": 7,
+                "node_colors": toytree.colors[1]}
+
+        # Create tree drawing
+        canvas = self.tree.draw(**style)[0]
+
+        # Make directory if does not already exist
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
+
+        # Overwrite file if file with same name is already in the directory
+        path = os.path.join(output_dir, filename)
+        if os.path.exists(path):
+            os.remove(path)
+
+        # Save tree image to output_dir
+        toyplot.html.render(canvas, path)
+
+    def draw_heatmap_tree(self): 
         """
         Method for drawing tree with heatmap.
         """
-        # Create tree object
-        tree = self.tree
-        tree = tree.root(wildcard="prz")
+        pass
 
-        # Create canvas
-        canvas = toyplot.Canvas(width=w, height=h)
-
-        # Add tree
-        axes = canvas.cartesian(bounds=(50, 150, 70, 250))
-        tree.draw(
-            axes=axes,
-            tip_labels=False,
-            tips_labels_align=True
-        )
-
-        # Add matrix
-        #table = canvas.table(
-            #rows= number of positions containing lfvs across all data in newick file
-            #columns= tree.ntips,
-            #margin=0,
-            #bounds=(175,250,65,255))
-
-        colormap = toyplot.color.brewer.map("BlueRed")
-
-        # Apply colors to heatmap matrix (need to make it based off of allele frequencies)
-        
-class BB_bottleneck:
-    """
-    Methods to create figures regarding bottleneck size and allele frequencies.
-    """
-    pass
-
+#tree = Phylo("RAxML_bestTree.raxml")
+#tree.draw_tree()
