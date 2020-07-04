@@ -1,5 +1,8 @@
 """Module containing classes and functions for parsing different types of data"""
 
+#Local import
+from transmission_toolkit.utils import Data, Biallelic, Multiallelic
+
 #Third party import
 import vcf
 
@@ -18,103 +21,10 @@ def _is_valid_lfv(min_read_depth, max_AF, var_reads, total_reads):
     #Otherwise, return False
     return False
 
-class BiallelicData:
-    """Dict-like object that stores biallelic data."""
-
-    def __init__(self):
-        """Initialize object"""
-        self.__dict = dict()
-
-    def __str__(self):
-        """Initialize object representation"""
-        return str(self.__dict)
-
-    def dict__(self):
-        return dict(self)
-
-    def __getitem__(self, key):
-        """Returns item at key in object"""
-        return self.__dict[key]
-
-    def __setitem__(self, key, value):
-        """Sets key-value pair in object"""
-        self.__dict[key] = value
-
-    def __iter__(self):
-        """Returns iterable of object"""
-        return iter(self.__dict.items())
-
-    def __len__(self):
-        """Returns length of object"""
-        return len(self.__dict)
-
-    def __delitem__(self, key):
-        """Deletes item from object"""
-        del self.__dict[key]
-
-    def positions(self):
-        """Returns a list of all of the positions stored in the object"""
-        return self.__dict.keys()
-
-    def store(self, pos, var, freq, var_depth):
-        """Stores biallelic data in object"""
-        if pos in self.__dict:
-            variant = list(self.__dict[pos].values())
-            old_freq = variant[0][0]
-            if old_freq < freq:
-                self.__dict[pos] = {var: [freq, var_depth]}
-        else:
-            self.__dict[pos] = {var: [freq, var_depth]}
-
-class MultiallelicData:
-    """Dict-like object that stores biallelic data."""
-    def __init__(self):
-        """Initialize object"""
-        self.__dict = dict()
-
-    def __str__(self):
-        """Initialize object representation"""
-        return str(self.__dict)
-
-    def __getitem__(self, key):
-        """Returns item at key in object"""
-        return self.__dict[key]
-
-    def __setitem__(self, key, value):
-        """Sets key-value pair in object"""
-        self.__dict[key] = value
-
-    def __iter__(self):
-        """Returns iterable of object"""
-        return iter(self.__dict.items())
-
-    def __len__(self):
-        """Returns length of object"""
-        return len(self.__dict)
-
-    def __delitem__(self, key):
-        """Deletes item from object"""
-        del self.__dict[key]
-
-    def get(self, item):
-        """Gets an item stored in object if it is there"""
-        return self.__dict.get(item, None)
-
-    def positions(self):
-        """Returns a list of all of the positions stored in the object"""
-        return self.__dict.keys()
-
-    def store(self, pos, var, freq, var_depth):
-        """Stores multiallelic data in object"""
-        if pos in self.__dict:
-            self.__dict[pos][var] = [freq, var_depth]
-        else:
-            self.__dict[pos] = {var: [freq, var_depth]}
-
 def extract_lfv(filename, min_read_depth=0, max_AF=1, parse_type="biallelic", store_reference=True, masks=None, mask_status='hide'):
     """
     Extracts variant data from VCF and creates a dictionary storing data
-    in the form: {position: {variant: [frequency, depth}}.
+    in the form: {position: {variant: [frequency, depth]}}.
     """
 
     #### Handle Errors #####
@@ -139,7 +49,7 @@ def extract_lfv(filename, min_read_depth=0, max_AF=1, parse_type="biallelic", st
                         for num in range(nums[0], nums[1]):
                             mask_positions.append(int(num))
 
-    lfv_data = BiallelicData() if parse_type == "biallelic" else MultiallelicData()
+    lfv_data = Biallelic() if parse_type == "biallelic" else Multiallelic()
     data = vcf.Reader(open(filename, 'r'))
     ref_data = {}
 
@@ -173,21 +83,18 @@ def extract_lfv(filename, min_read_depth=0, max_AF=1, parse_type="biallelic", st
             if _is_valid_lfv(min_read_depth, max_AF, ref_depth, raw_depth):
                 ref_data[pos] = {ref: [(ref_depth / raw_depth), ref_depth]}
 
-   
     # After parsing is complete, make object into a dictionary
     lfv_data = dict(lfv_data)
-
-    
 
     # If we collected reference data, update lfv_data
     if store_reference:
         for pos in ref_data:
-            if pos in lfv_data:
+            if not pos in lfv_data:
                 print("if")
                 lfv_data[pos] = ref_data[pos]
             else:
                 print("else")
-                lfv_data.update(ref_data[pos])
+                lfv_data[pos].update(ref_data[pos])
 
     return lfv_data, mask_positions
 

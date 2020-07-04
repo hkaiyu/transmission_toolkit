@@ -1,11 +1,26 @@
 """Module that contains functions relating to BB_bottleneck software."""
 
+# Standard library imports
 import os
 import subprocess
 
 #Local import
 from transmission_toolkit import parsers
 
+def write_fasta(consensus_dict, output_file, line_length=80):
+	"""
+	Given a dictionary mapping id's to consensus sequences, returns 
+	fasta file with given information.
+	"""
+	with open(output_file, 'w') as f:
+		for id in consensus_dict:
+			f.write(f">{id}")
+			consensus = consensus_dict[id]
+			lines = [consensus[i:i+line_length] for i in range(
+                0, len(consensus), line_length)]
+			for line in lines:
+				f.write(line)
+    
 def bb_file_writer(donor, recipient, parse_type="biallelic", min_read_depth=0, max_AF=1, var_calling_threshold=0.03):
     """
     Writes input file to BB_bottleneck software.
