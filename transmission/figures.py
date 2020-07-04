@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import datetime
 import numpy as np
-from parsers import parse_biallelic as biallelic, parse_multiallelic as multiallelic
+from transmission_toolkit import parsers
 
-def make_standard_bar_plot(donor_filename, recipient_filename, parse_type, min_AF = 0.03, max_AF = 0.5):
+def make_standard_bar_plot(donor_filename, recipient_filename, min_read_depth=0, max_AF=1, parse_type="biallelic", store_reference=True):
     """
     Saves a barplot figure showing allele frequencies vs. position.
     Inputs:
@@ -14,14 +14,15 @@ def make_standard_bar_plot(donor_filename, recipient_filename, parse_type, min_A
     > max_AF - the maximum frequency at which we consider the allele to be a low frequency 
         variant; if not specified, it is defaulted to be at 0.5
     """
-    vcf_data = parse_type(donor_filename, recipient_filename)[0]
+    print(parse_type, type(parse_type))
+    vcf_data = parsers.bb_input_data(donor_filename, recipient_filename, min_read_depth, max_AF, parse_type, store_reference)[0]
     positions, donor_freqs, recipient_freqs = [], [], []
 
     for pos in sorted(vcf_data):
         for nuc in vcf_data[pos]:
             positions.append((pos, nuc))
             donor_freqs.append(round(vcf_data[pos][nuc][0], 2))
-            recipient_freqs.append(round(vcf_data[pos][nuc][2], 2))
+            recipient_freqs.append(round(vcf_data[pos][nuc][1], 2))
 
     x = np.arange(len(positions))  # the label locations
     width = 0.35  # the width of the bars
@@ -65,7 +66,7 @@ def make_standard_bar_plot(donor_filename, recipient_filename, parse_type, min_A
     plt.show()
 
 
-def make_weighted_bar_plot(donor_filename, recipient_filename, parse_type, min_AF = 0.03, max_AF = 0.5):
+def make_weighted_bar_plot(donor_filename, recipient_filename, min_read_depth=0, max_AF=1, parse_type="biallelic", store_reference=True):
     """
     Saves a barplot figure showing allele frequencies vs. position.
     Inputs:
@@ -76,15 +77,16 @@ def make_weighted_bar_plot(donor_filename, recipient_filename, parse_type, min_A
     > max_AF - the maximum frequency at which we consider the allele to be a low frequency 
         variant; if not specified, it is defaulted to be at 0.5
     """
-    vcf_data = parse_type(donor_filename, recipient_filename)[0]
+    print(parse_type)
+    vcf_data = parsers.bb_input_data(donor_filename, recipient_filename, min_read_depth=min_read_depth, max_AF=max_AF, parse_type=parse_type, store_reference=store_reference, weighted=True)[0]
     positions, donor_freqs, recipient_freqs, donor_depths, recipient_depths = [], [], [], [], []
 
     for pos in sorted(vcf_data):
         for nuc in vcf_data[pos]:
             positions.append((pos, nuc))
             donor_freqs.append(round(vcf_data[pos][nuc][0], 2))
-            recipient_freqs.append(round(vcf_data[pos][nuc][2], 2))
-            donor_depths.append((vcf_data[pos][nuc][1])/20)
+            recipient_freqs.append(round(vcf_data[pos][nuc][1], 2))
+            donor_depths.append((vcf_data[pos][nuc][2])/20)
             recipient_depths.append((vcf_data[pos][nuc][3])/20)
 
     x = np.arange(len(positions))  # the label locations
