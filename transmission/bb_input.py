@@ -1,14 +1,17 @@
 """Module that contains functions relating to BB_bottleneck software."""
 
+import os
+import subprocess
+
 #Local import
 from transmission_toolkit import parsers
 
-def bb_file_writer(donor, recipient, parse_type="biallelic", min_read_depth=0, max_AF=1):
+def bb_file_writer(donor, recipient, parse_type="biallelic", min_read_depth=0, max_AF=1, var_calling_threshold=0.03):
     """
     Writes input file to BB_bottleneck software.
     """
     # Parse data and store outputs
-    vcf_data, shared_count = parsers.bb_input_data(donor, recipient)
+    vcf_data, shared_count = parsers.bb_input_data(donor, recipient, store_reference=False)[0], parsers.bb_input_data(donor, recipient, store_reference=False)[1]
 
     # Create shortened filenames
     fname1 = donor.split("_")[0] 
@@ -19,6 +22,5 @@ def bb_file_writer(donor, recipient, parse_type="biallelic", min_read_depth=0, m
     with open(filename, "w") as f:
         for pos in vcf_data:
             for var in vcf_data[pos]:
-                f.write(str(vcf_data[pos][var][0])+'\t'+str(vcf_data[pos][var][1])+'\n')
-
-
+                if vcf_data[pos][var][0] > var_calling_threshold:
+                    f.write(str(vcf_data[pos][var][0])+'\t'+str(vcf_data[pos][var][1])+'\n')
