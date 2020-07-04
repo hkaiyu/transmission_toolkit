@@ -16,10 +16,8 @@ def write_fasta(consensus_dict, output_file, line_length=80):
 		for id in consensus_dict:
 			f.write(f">{id}")
 			consensus = consensus_dict[id]
-			lines = [consensus[i:i+line_length] for i in range(
-                0, len(consensus), line_length)]
-			for line in lines:
-				f.write(line)
+			for i in range(0, len(consensus), line_length):
+				f.write(consensus[i: i+line_length])
     
 def bb_file_writer(donor, recipient, parse_type="biallelic", min_read_depth=0, max_AF=1, var_calling_threshold=0.03):
     """
