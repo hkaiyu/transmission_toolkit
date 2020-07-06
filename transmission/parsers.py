@@ -30,7 +30,7 @@ def extract_lfv(filename, min_read_depth=0, max_AF=1, parse_type="biallelic", st
     #### Handle Errors #####
     PARSE_TYPES = {"biallelic", "multiallelic"}
     MASK_TYPES = {"hide", "highlight"}
-    if min_read_depth < 0 or int(max_AF) > 1 or parse_type not in PARSE_TYPES or str(mask_status) not in MASK_TYPES:
+    if min_read_depth < 0 or max_AF > 1 or parse_type not in PARSE_TYPES or str(mask_status) not in MASK_TYPES:
         raise ValueError("Invalid input.")
 
     #########################
