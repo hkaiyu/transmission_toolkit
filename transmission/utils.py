@@ -42,14 +42,15 @@ class Biallelic(Data):
         super().__init__()
         self.__dict = dict()
 
-    def store(self, pos, var, freq):
+    def store(self, pos, var, freq, var_depth):
         """Stores biallelic data in object"""
         if pos in self.__dict:
-            old_freq = self.__dict[pos].values()[0]
+            variant = list(self.__dict[pos].values())
+            old_freq = variant[0][0]
             if old_freq < freq:
-                self.__dict[pos] = {var: freq}
+                self.__dict[pos] = {var: [freq, var_depth]}
         else:
-            self.__dict[pos] = {var: freq}
+            self.__dict[pos] = {var: [freq, var_depth]}
 
 class Multiallelic(Data):
     """Dict-like object that stores biallelic data."""
@@ -58,9 +59,9 @@ class Multiallelic(Data):
         super().__init__()
         self.__dict = dict()
 
-    def store(self, pos, var, freq):
+    def store(self, pos, var, freq, var_depth):
         """Stores multiallelic data in object"""
         if pos in self.__dict:
-            self.__dict[pos][var] = freq
+            self.__dict[pos][var] = [freq, var_depth]
         else:
-            self.__dict[pos] = {var: freq}
+            self.__dict[pos] = {var: [freq, var_depth]}
