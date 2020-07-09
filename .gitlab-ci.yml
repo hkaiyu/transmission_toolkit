@@ -1,0 +1,23 @@
+pylint:
+  stage: test
+  image: python:3.7
+  before_script:
+  script:
+    - mkdir ./pylint
+    - set -e
+    - set -o pipefail
+    - shopt -s globstar
+    - pylint ./**/*.py -ry --output-format=text | tee ./pylint/pylint.txt || pylint-exit ${PIPESTATUS[0]}
+    - shopt -u globstar
+    - PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint.txt)
+    - anybadge --label=Pylint --file=pylint/pylint.svg --value=$PYLINT_SCORE 2=red 4=orange 8=yellow 10=green
+    - echo "Pylint score is $PYLINT_SCORE"
+  only: 
+    refs:
+      - merge_requests
+      - master
+    changes:
+      - "**/*.py"
+  artifacts:
+    paths:
+      - ./pylint/
