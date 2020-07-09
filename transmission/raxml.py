@@ -4,7 +4,7 @@ A module containing functions for running RAxML
 #Standard library imports
 import os
 import subprocess
-import shutil
+import glob
 
 def run_raxml(filename, label='raxml', output_dir='raxml-trees', custom_cmd=''):
     """
@@ -17,10 +17,12 @@ def run_raxml(filename, label='raxml', output_dir='raxml-trees', custom_cmd=''):
         custom_cmd (str, optional): A custom RAxML command.
     """
 
-    # Remove directory if it exists
+    # If directory already exists, delete all files with same label
     if os.path.exists(output_dir):
-        shutil.rmtree(output_dir)
-    os.mkdir(output_dir)
+        for fname in glob.glob(os.path.join(output_dir, f"*.{label}")):
+            os.remove(os.path.join(output_dir, fname))
+    else:
+        os.mkdir(output_dir)
 
     # If user specifies command, then we run that in command line
     if custom_cmd:

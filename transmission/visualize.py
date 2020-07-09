@@ -10,6 +10,12 @@ import toytree
 import toyplot
 import toyplot.svg
 
+# Local imports
+from .parsers import extract_lfv
+from .raxml import run_raxml
+from .writers import write_fasta
+from .consensus import map_consensus
+
 class Phylo:
     """
     Methods that the user can use to visualize phylogenetic trees.
@@ -84,5 +90,24 @@ class Phylo:
         """
         pass
 
-#tree = Phylo("RAxML_bestTree.raxml")
-#tree.draw_tree()
+
+def construct_standard_tree(vcfpath, reference, output_dir="RAxML_files"):
+    """
+    Given a path to a directory of VCF files and a reference_sequence, builds a 
+    phylogenetic tree.
+
+    Args:
+        path_to_vcfs (str): path to directory of VCF files
+        reference_sequence (str): 
+    """
+    # Write a fasta file from the given VCF's and reference sequence
+    write_fasta(map_consensus(vcfpath, reference), "raxml_input", output_dir=output_dir)
+
+    # Run RAxML on the fasta file
+    run_raxml("raxml_input.fasta", output_dir=output_dir)
+
+    # Visualize the tree with standard arguments
+    tree = Phylo(os.path.join(f"{output_dir}", "RAxML_BestTree.raxml"))
+
+    # Save the image
+    tree.draw_tree()
