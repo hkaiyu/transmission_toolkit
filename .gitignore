@@ -1,0 +1,5 @@
+# Ignore fasta files
+*.fasta
+
+# Ignore example_data directory
+example_data
