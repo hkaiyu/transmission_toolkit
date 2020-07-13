@@ -23,6 +23,23 @@ def _is_valid_lfv(min_read_depth, max_AF, var_reads, total_reads):
     #Otherwise, return False
     return False
 
+def mask_parse(masks):
+    """
+    Parses a txt file of masked positions
+    """
+    mask_positions = []
+    with open(masks, "r") as mask_file:
+            for line in mask_file:
+                comma_split = line.split(",")
+                for item in comma_split:
+                    nums = item.split("-")
+                    if len(nums) == 1:
+                        mask_positions.append(int(nums[0]))
+                    else:
+                        for num in range(int(nums[0]), int(nums[1])):
+                            mask_positions.append(int(num))
+    return mask_positions
+
 def extract_lfv(filepath, min_read_depth=0, max_AF=1, parse_type="biallelic", store_reference=True, masks=None, mask_status='hide'):
     """
     Extracts variant data from VCF and creates a dictionary storing data
@@ -37,18 +54,8 @@ def extract_lfv(filepath, min_read_depth=0, max_AF=1, parse_type="biallelic", st
     #########################
 
     #Parse mask file if mask file is inputted
-    mask_positions = []
-    if masks:
-        with open(masks, "r") as mask_file:
-            for line in mask_file:
-                comma_split = line.split(",")
-                for item in comma_split:
-                    nums = item.split("-")
-                    if len(nums) == 1:
-                        mask_positions.append(int(nums))
-                    else:
-                        for num in range(nums[0], nums[1]):
-                            mask_positions.append(int(num))
+    if masks != None:
+        mask_positions = mask_parse(masks)
 
     lfv_data = Biallelic() if parse_type == "biallelic" else Multiallelic()
     data = vcf.Reader(open(filepath, 'r'))
@@ -61,7 +68,7 @@ def extract_lfv(filepath, min_read_depth=0, max_AF=1, parse_type="biallelic", st
         pos, var, freq = record.POS, str(record.ALT[0]), float(var_depth / raw_depth) 
 
         #doesn't include masked positions based on user settings
-        if pos in mask_positions and mask_status == 'hide':
+        if masks!= None and pos in mask_positions and mask_status == 'hide':
             continue
 
         # If variant passes restrictions, store data
@@ -89,14 +96,14 @@ def extract_lfv(filepath, min_read_depth=0, max_AF=1, parse_type="biallelic", st
             else:
                 lfv_data[pos].update(ref_data[pos])
 
-    return lfv_data, mask_positions
+    return lfv_data
 
 def bb_input_data(donor, recip, min_read_depth=0, max_AF=1, parse_type="biallelic", store_reference=True, weighted=False):
     """
     Stores info from parsing VCF files to dictionary.
     """
-    donor_data, donor_masks = extract_lfv(donor, min_read_depth=min_read_depth, max_AF=max_AF, parse_type=parse_type, store_reference=store_reference)
-    recip_data, recip_masks = extract_lfv(recip, min_read_depth=min_read_depth, max_AF=max_AF, parse_type=parse_type, store_reference=store_reference)
+    donor_data = extract_lfv(donor, min_read_depth=min_read_depth, max_AF=max_AF, parse_type=parse_type, store_reference=store_reference)
+    recip_data = extract_lfv(recip, min_read_depth=min_read_depth, max_AF=max_AF, parse_type=parse_type, store_reference=store_reference)
 
     shared_count = 0
 
@@ -128,4 +135,4 @@ def bb_input_data(donor, recip, min_read_depth=0, max_AF=1, parse_type="bialleli
                     bb_data[pos][var][3] = recip_depth
 
 
-    return (bb_data, shared_count, donor_masks, recip_masks)
+    return (bb_data, shared_count)
