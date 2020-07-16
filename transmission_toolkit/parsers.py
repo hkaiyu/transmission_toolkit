@@ -73,7 +73,7 @@ def extract_lfv(filepath, min_read_depth=0, max_AF=1, parse_type="biallelic", st
 
         # If variant passes restrictions, store data
         if _is_valid_lfv(min_read_depth, max_AF, var_depth, raw_depth):
-            lfv_data.store(pos, var, freq, var_depth)
+            lfv_data[pos] = {var: [freq, var_depth]}
 
         if store_reference and not pos in ref_data:
 
