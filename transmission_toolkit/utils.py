@@ -1,67 +1,28 @@
 """Utility functions and classes"""
 
-class Data:
-    """Class for storing data in dict-like object"""
-    def __init__(self):
-        """Initialize object"""
-        self.__dict = dict()
+import ntpath
 
-    def __str__(self):
-        """Initialize object representation"""
-        return str(self.__dict)
+def get_seq(sequence):
+    """
+    Returns string representation of sequence genome given a FASTA file.
+    Assumes only one sequence in the file
+    """    
+    consensus = str()
 
-    def __getitem__(self, key):
-        """Returns item at key in object"""
-        return self.__dict[key]
+    with open(sequence, 'r') as f:
+        lines = [line.strip() for line in f.readlines()]
+        for line in lines[1:]:
+            consensus += line
+            if line and line[0] == '>':
+                raise ValueError('File should only include one sequence.')
 
-    def __setitem__(self, key, value):
-        """Sets key-value pair in object"""
-        self.__dict[key] = value
-
-    def __iter__(self):
-        """Returns iterable of object"""
-        return iter(self.__dict.items())
-
-    def __len__(self):
-        """Returns length of object"""
-        return len(self.__dict)
-
-    def __delitem__(self, key):
-        """Deletes item from object"""
-        del self.__dict[key]
-
-    def positions(self):
-        """Returns a list of all of the positions stored in the object"""
-        return self.__dict.keys()
-
-class Biallelic(Data):
-    """Dict-like object that stores biallelic data."""
-
-    def __init__(self):
-        """Initialize object"""
-        super().__init__()
-        self.__dict = dict()
-
-    def store(self, pos, var, freq, var_depth):
-        """Stores biallelic data in object"""
-        if pos in self.__dict:
-            variant = list(self.__dict[pos].values())
-            old_freq = variant[0][0]
-            if old_freq < freq:
-                self.__dict[pos] = {var: [freq, var_depth]}
-        else:
-            self.__dict[pos] = {var: [freq, var_depth]}
-
-class Multiallelic(Data):
-    """Dict-like object that stores biallelic data."""
-    def __init__(self):
-        """Initialize object"""
-        super().__init__()
-        self.__dict = dict()
-
-    def store(self, pos, var, freq, var_depth):
-        """Stores multiallelic data in object"""
-        if pos in self.__dict:
-            self.__dict[pos][var] = [freq, var_depth]
-        else:
-            self.__dict[pos] = {var: [freq, var_depth]}
+    return consensus
+    
+def getpathleaf(path):
+    '''
+    Returns the leaf of a given path.
+    For example, if inputted, home/user/.../file, it
+    will return file
+    '''
+    head, tail = ntpath.split(path)
+    return tail or ntpath.basename(head)
