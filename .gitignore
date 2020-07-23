@@ -1,5 +1,11 @@
 # Ignore fasta files
 *.fasta
 
-# Ignore example_data directory
+# Ignore folders
 example_data
+testTransmission
+TransmissionViz
+dist
+build
+.vscode
+transmission_toolkit.egg-info
