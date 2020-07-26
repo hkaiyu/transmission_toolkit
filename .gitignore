@@ -3,3 +3,6 @@
 
 # Ignore example_data directory
 example_data
+
+# Ignore config. folder
+.vscode

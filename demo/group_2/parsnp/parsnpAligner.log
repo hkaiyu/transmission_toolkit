@@ -1,0 +1,68 @@
+Number of sequences analyzed:         7
+
+Sequence 1 : /media/sf_git_projects/transmission_toolkit/demo/group_2/parsnp/sequence.fasta.ref
+sequence.fasta.ref
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 2 : demo/group_2/tmp/ERR4145133.fna
+ERR4145133.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 3 : demo/group_2/tmp/ERR4145184.fna
+ERR4145184.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 4 : demo/group_2/tmp/ERR4145135.fna
+ERR4145135.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 5 : demo/group_2/tmp/ERR4145189.fna
+ERR4145189.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 6 : demo/group_2/tmp/ERR4145199.fna
+ERR4145199.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 7 : demo/group_2/tmp/ERR4145210.fna
+ERR4145210.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+d value:   300
+q value:   30
+
+Mum anchor size:   17.0
+Number of MUM anchors found:   3 
+Number of MUMs found:   0 
+Total MUMs found((Anchors+MUMs)-filtered):   3 
+
+Random MUM length:   1 
+Minimum Cluster length:   21
+Number of MUMs filtered:   0 
+Number of Clusters filtered:   0 
+
+Number of clusters created:   1 
+Average number of MUMs per cluster:   3 
+Average cluster length:   29903 bps
+Cluster coverage in sequence 1:   100.0%
+Cluster coverage in sequence 2:   100.0%
+Cluster coverage in sequence 3:   100.0%
+Cluster coverage in sequence 4:   100.0%
+Cluster coverage in sequence 5:   100.0%
+Cluster coverage in sequence 6:   100.0%
+Cluster coverage in sequence 7:   100.0%
+Total coverage among all sequences:   100.0%
+
+ MUM anchor search elapsed time:   0.0s 
+ MUM coarsening elapsed time:   0.0s 
+ MUM filtering elapsed time:   0.0s 
+ MUM clustering elapsed time:   0.0s 
+ Inter-clustering elapsed time:   0.0s 
+ Total running time:   0.0s 

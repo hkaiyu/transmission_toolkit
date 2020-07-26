@@ -1,0 +1,308 @@
+Number of sequences analyzed:        47
+
+Sequence 1 : /media/sf_git_projects/transmission_toolkit/demo/parsnp/sequence.fasta.ref
+sequence.fasta.ref
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 2 : demo/tmp/ERR4144817.fna
+ERR4144817.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 3 : demo/tmp/ERR4144818.fna
+ERR4144818.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 4 : demo/tmp/ERR4144819.fna
+ERR4144819.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 5 : demo/tmp/ERR4144821.fna
+ERR4144821.fna
+Length:     29903 bps
+ GC:   11353.0
+ AT:   18550.0
+Sequence 6 : demo/tmp/ERR4144873.fna
+ERR4144873.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 7 : demo/tmp/ERR4144874.fna
+ERR4144874.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 8 : demo/tmp/ERR4144820.fna
+ERR4144820.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 9 : demo/tmp/ERR4144875.fna
+ERR4144875.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 10 : demo/tmp/ERR4145131.fna
+ERR4145131.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 11 : demo/tmp/ERR4145132.fna
+ERR4145132.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 12 : demo/tmp/ERR4145134.fna
+ERR4145134.fna
+Length:     29903 bps
+ GC:   11353.0
+ AT:   18550.0
+Sequence 13 : demo/tmp/ERR4145133.fna
+ERR4145133.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 14 : demo/tmp/ERR4145135.fna
+ERR4145135.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 15 : demo/tmp/ERR4145143.fna
+ERR4145143.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 16 : demo/tmp/ERR4145137.fna
+ERR4145137.fna
+Length:     29903 bps
+ GC:   11352.0
+ AT:   18551.0
+Sequence 17 : demo/tmp/ERR4145147.fna
+ERR4145147.fna
+Length:     29903 bps
+ GC:   11348.0
+ AT:   18555.0
+Sequence 18 : demo/tmp/ERR4145175.fna
+ERR4145175.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 19 : demo/tmp/ERR4145179.fna
+ERR4145179.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 20 : demo/tmp/ERR4145151.fna
+ERR4145151.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 21 : demo/tmp/ERR4145184.fna
+ERR4145184.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 22 : demo/tmp/ERR4145194.fna
+ERR4145194.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 23 : demo/tmp/ERR4145199.fna
+ERR4145199.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 24 : demo/tmp/ERR4145189.fna
+ERR4145189.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 25 : demo/tmp/ERR4145203.fna
+ERR4145203.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 26 : demo/tmp/ERR4145215.fna
+ERR4145215.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 27 : demo/tmp/ERR4145210.fna
+ERR4145210.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 28 : demo/tmp/ERR4145224.fna
+ERR4145224.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 29 : demo/tmp/ERR4145220.fna
+ERR4145220.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 30 : demo/tmp/ERR4145225.fna
+ERR4145225.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 31 : demo/tmp/ERR4145237.fna
+ERR4145237.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 32 : demo/tmp/ERR4145230.fna
+ERR4145230.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 33 : demo/tmp/ERR4145244.fna
+ERR4145244.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 34 : demo/tmp/ERR4145250.fna
+ERR4145250.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 35 : demo/tmp/ERR4145262.fna
+ERR4145262.fna
+Length:     29903 bps
+ GC:   11348.0
+ AT:   18555.0
+Sequence 36 : demo/tmp/ERR4145258.fna
+ERR4145258.fna
+Length:     29903 bps
+ GC:   11349.0
+ AT:   18554.0
+Sequence 37 : demo/tmp/ERR4145276.fna
+ERR4145276.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 38 : demo/tmp/ERR4145269.fna
+ERR4145269.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 39 : demo/tmp/ERR4145282.fna
+ERR4145282.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 40 : demo/tmp/ERR4145289.fna
+ERR4145289.fna
+Length:     29903 bps
+ GC:   11349.0
+ AT:   18554.0
+Sequence 41 : demo/tmp/ERR4145304.fna
+ERR4145304.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 42 : demo/tmp/ERR4145299.fna
+ERR4145299.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 43 : demo/tmp/ERR4145308.fna
+ERR4145308.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 44 : demo/tmp/ERR4145311.fna
+ERR4145311.fna
+Length:     29903 bps
+ GC:   11351.0
+ AT:   18552.0
+Sequence 45 : demo/tmp/ERR4145416.fna
+ERR4145416.fna
+Length:     29903 bps
+ GC:   11348.0
+ AT:   18555.0
+Sequence 46 : demo/tmp/ERR4145417.fna
+ERR4145417.fna
+Length:     29903 bps
+ GC:   11352.0
+ AT:   18551.0
+Sequence 47 : demo/tmp/ERR4145418.fna
+ERR4145418.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+d value:   300
+q value:   30
+
+Mum anchor size:   17.0
+Number of MUM anchors found:   48
+Number of MUMs found:   0 
+Total MUMs found((Anchors+MUMs)-filtered):   48
+
+Random MUM length:   1 
+Minimum Cluster length:   21
+Number of MUMs filtered:   0 
+Number of Clusters filtered:   0 
+
+Number of clusters created:   1 
+Average number of MUMs per cluster:   48
+Average cluster length:   29903 bps
+Cluster coverage in sequence 1:   100.0%
+Cluster coverage in sequence 2:   100.0%
+Cluster coverage in sequence 3:   100.0%
+Cluster coverage in sequence 4:   100.0%
+Cluster coverage in sequence 5:   100.0%
+Cluster coverage in sequence 6:   100.0%
+Cluster coverage in sequence 7:   100.0%
+Cluster coverage in sequence 8:   100.0%
+Cluster coverage in sequence 9:   100.0%
+Cluster coverage in sequence 10:   100.0%
+Cluster coverage in sequence 11:   100.0%
+Cluster coverage in sequence 12:   100.0%
+Cluster coverage in sequence 13:   100.0%
+Cluster coverage in sequence 14:   100.0%
+Cluster coverage in sequence 15:   100.0%
+Cluster coverage in sequence 16:   100.0%
+Cluster coverage in sequence 17:   100.0%
+Cluster coverage in sequence 18:   100.0%
+Cluster coverage in sequence 19:   100.0%
+Cluster coverage in sequence 20:   100.0%
+Cluster coverage in sequence 21:   100.0%
+Cluster coverage in sequence 22:   100.0%
+Cluster coverage in sequence 23:   100.0%
+Cluster coverage in sequence 24:   100.0%
+Cluster coverage in sequence 25:   100.0%
+Cluster coverage in sequence 26:   100.0%
+Cluster coverage in sequence 27:   100.0%
+Cluster coverage in sequence 28:   100.0%
+Cluster coverage in sequence 29:   100.0%
+Cluster coverage in sequence 30:   100.0%
+Cluster coverage in sequence 31:   100.0%
+Cluster coverage in sequence 32:   100.0%
+Cluster coverage in sequence 33:   100.0%
+Cluster coverage in sequence 34:   100.0%
+Cluster coverage in sequence 35:   100.0%
+Cluster coverage in sequence 36:   100.0%
+Cluster coverage in sequence 37:   100.0%
+Cluster coverage in sequence 38:   100.0%
+Cluster coverage in sequence 39:   100.0%
+Cluster coverage in sequence 40:   100.0%
+Cluster coverage in sequence 41:   100.0%
+Cluster coverage in sequence 42:   100.0%
+Cluster coverage in sequence 43:   100.0%
+Cluster coverage in sequence 44:   100.0%
+Cluster coverage in sequence 45:   100.0%
+Cluster coverage in sequence 46:   100.0%
+Cluster coverage in sequence 47:   100.0%
+Total coverage among all sequences:   100.0%
+
+ MUM anchor search elapsed time:   0.0s 
+ MUM coarsening elapsed time:   0.0s 
+ MUM filtering elapsed time:   0.0s 
+ MUM clustering elapsed time:   0.0s 
+ Inter-clustering elapsed time:   0.0s 
+ Total running time:   0.0s 

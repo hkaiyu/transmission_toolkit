@@ -1,0 +1,92 @@
+Number of sequences analyzed:        11
+
+Sequence 1 : /media/sf_git_projects/transmission_toolkit/TransmissionViz/parsnp/sequence.fasta.ref
+sequence.fasta.ref
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 2 : TransmissionViz/tmp/record10.fna
+record10.fna
+Length:     29903 bps
+ GC:   11350.0
+ AT:   18553.0
+Sequence 3 : TransmissionViz/tmp/record1.fna
+record1.fna
+Length:     29903 bps
+ GC:   11365.0
+ AT:   18538.0
+Sequence 4 : TransmissionViz/tmp/record11.fna
+record11.fna
+Length:     29903 bps
+ GC:   11394.0
+ AT:   18509.0
+Sequence 5 : TransmissionViz/tmp/record2.fna
+record2.fna
+Length:     29903 bps
+ GC:   11365.0
+ AT:   18538.0
+Sequence 6 : TransmissionViz/tmp/record3.fna
+record3.fna
+Length:     29903 bps
+ GC:   10930.0
+ AT:   18973.0
+Sequence 7 : TransmissionViz/tmp/record5.fna
+record5.fna
+Length:     29903 bps
+ GC:   11345.0
+ AT:   18558.0
+Sequence 8 : TransmissionViz/tmp/record4.fna
+record4.fna
+Length:     29903 bps
+ GC:   11348.0
+ AT:   18555.0
+Sequence 9 : TransmissionViz/tmp/record6.fna
+record6.fna
+Length:     29903 bps
+ GC:   11349.0
+ AT:   18554.0
+Sequence 10 : TransmissionViz/tmp/record7.fna
+record7.fna
+Length:     29903 bps
+ GC:   11358.0
+ AT:   18545.0
+Sequence 11 : TransmissionViz/tmp/record9.fna
+record9.fna
+Length:     29903 bps
+ GC:   11229.0
+ AT:   18674.0
+d value:   300
+q value:   30
+
+Mum anchor size:   17.0
+Number of MUM anchors found:   606
+Number of MUMs found:   262
+Total MUMs found((Anchors+MUMs)-filtered):   866
+
+Random MUM length:   1 
+Minimum Cluster length:   21
+Number of MUMs filtered:   2 
+Number of Clusters filtered:   2 
+
+Number of clusters created:   1 
+Average number of MUMs per cluster:   866
+Average cluster length:   29866 bps
+Cluster coverage in sequence 1:   99.9%
+Cluster coverage in sequence 2:   99.9%
+Cluster coverage in sequence 3:   99.9%
+Cluster coverage in sequence 4:   99.9%
+Cluster coverage in sequence 5:   99.9%
+Cluster coverage in sequence 6:   99.9%
+Cluster coverage in sequence 7:   99.9%
+Cluster coverage in sequence 8:   99.9%
+Cluster coverage in sequence 9:   99.9%
+Cluster coverage in sequence 10:   99.9%
+Cluster coverage in sequence 11:   99.9%
+Total coverage among all sequences:   99.9%
+
+ MUM anchor search elapsed time:   1.0s 
+ MUM coarsening elapsed time:   0.0s 
+ MUM filtering elapsed time:   0.0s 
+ MUM clustering elapsed time:   0.0s 
+ Inter-clustering elapsed time:   0.0s 
+ Total running time:   1.0s 

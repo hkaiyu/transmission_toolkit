@@ -1,0 +1,134 @@
+Number of sequences analyzed:        18
+
+Sequence 1 : /media/sf_git_projects/transmission_toolkit/denmark_amplicon_no_ref/parsnp/sequence.fasta.ref
+sequence.fasta.ref
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 2 : denmark_amplicon_no_ref/tmp/ERR4176316.fna
+ERR4176316.fna
+Length:     29903 bps
+ GC:   11354.0
+ AT:   18549.0
+Sequence 3 : denmark_amplicon_no_ref/tmp/ERR4176320.fna
+ERR4176320.fna
+Length:     29903 bps
+ GC:   11356.0
+ AT:   18547.0
+Sequence 4 : denmark_amplicon_no_ref/tmp/ERR4176321.fna
+ERR4176321.fna
+Length:     29903 bps
+ GC:   11354.0
+ AT:   18549.0
+Sequence 5 : denmark_amplicon_no_ref/tmp/ERR4176325.fna
+ERR4176325.fna
+Length:     29903 bps
+ GC:   11353.0
+ AT:   18550.0
+Sequence 6 : denmark_amplicon_no_ref/tmp/ERR4176330.fna
+ERR4176330.fna
+Length:     29903 bps
+ GC:   11352.0
+ AT:   18551.0
+Sequence 7 : denmark_amplicon_no_ref/tmp/ERR4176329.fna
+ERR4176329.fna
+Length:     29903 bps
+ GC:   11354.0
+ AT:   18549.0
+Sequence 8 : denmark_amplicon_no_ref/tmp/ERR4176334.fna
+ERR4176334.fna
+Length:     29903 bps
+ GC:   11349.0
+ AT:   18554.0
+Sequence 9 : denmark_amplicon_no_ref/tmp/ERR4176338.fna
+ERR4176338.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 10 : denmark_amplicon_no_ref/tmp/ERR4176344.fna
+ERR4176344.fna
+Length:     29903 bps
+ GC:   11354.0
+ AT:   18549.0
+Sequence 11 : denmark_amplicon_no_ref/tmp/ERR4176369.fna
+ERR4176369.fna
+Length:     29903 bps
+ GC:   11353.0
+ AT:   18550.0
+Sequence 12 : denmark_amplicon_no_ref/tmp/ERR4176373.fna
+ERR4176373.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 13 : denmark_amplicon_no_ref/tmp/ERR4176376.fna
+ERR4176376.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 14 : denmark_amplicon_no_ref/tmp/ERR4176396.fna
+ERR4176396.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+Sequence 15 : denmark_amplicon_no_ref/tmp/ERR4176379.fna
+ERR4176379.fna
+Length:     29903 bps
+ GC:   11353.0
+ AT:   18550.0
+Sequence 16 : denmark_amplicon_no_ref/tmp/ERR4176403.fna
+ERR4176403.fna
+Length:     29903 bps
+ GC:   11347.0
+ AT:   18556.0
+Sequence 17 : denmark_amplicon_no_ref/tmp/ERR4176402.fna
+ERR4176402.fna
+Length:     29903 bps
+ GC:   11354.0
+ AT:   18549.0
+Sequence 18 : denmark_amplicon_no_ref/tmp/ERR4176410.fna
+ERR4176410.fna
+Length:     29903 bps
+ GC:   11355.0
+ AT:   18548.0
+d value:   300
+q value:   30
+
+Mum anchor size:   17.0
+Number of MUM anchors found:   46
+Number of MUMs found:   0 
+Total MUMs found((Anchors+MUMs)-filtered):   46
+
+Random MUM length:   1 
+Minimum Cluster length:   21
+Number of MUMs filtered:   0 
+Number of Clusters filtered:   0 
+
+Number of clusters created:   1 
+Average number of MUMs per cluster:   46
+Average cluster length:   29903 bps
+Cluster coverage in sequence 1:   100.0%
+Cluster coverage in sequence 2:   100.0%
+Cluster coverage in sequence 3:   100.0%
+Cluster coverage in sequence 4:   100.0%
+Cluster coverage in sequence 5:   100.0%
+Cluster coverage in sequence 6:   100.0%
+Cluster coverage in sequence 7:   100.0%
+Cluster coverage in sequence 8:   100.0%
+Cluster coverage in sequence 9:   100.0%
+Cluster coverage in sequence 10:   100.0%
+Cluster coverage in sequence 11:   100.0%
+Cluster coverage in sequence 12:   100.0%
+Cluster coverage in sequence 13:   100.0%
+Cluster coverage in sequence 14:   100.0%
+Cluster coverage in sequence 15:   100.0%
+Cluster coverage in sequence 16:   100.0%
+Cluster coverage in sequence 17:   100.0%
+Cluster coverage in sequence 18:   100.0%
+Total coverage among all sequences:   100.0%
+
+ MUM anchor search elapsed time:   0.0s 
+ MUM coarsening elapsed time:   0.0s 
+ MUM filtering elapsed time:   0.0s 
+ MUM clustering elapsed time:   0.0s 
+ Inter-clustering elapsed time:   0.0s 
+ Total running time:   0.0s 

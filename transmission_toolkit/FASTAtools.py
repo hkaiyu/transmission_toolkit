@@ -1,43 +1,14 @@
 """Module for extracting data from fasta files and aligning seqences"""
+
 import os
 import glob
 import errno
 import subprocess
-from pathlib import Path
 
 from transmission_toolkit.utils import getpathleaf
-from transmission_toolkit.VCFtools import extract_lfv, build_consensus
+from transmission_toolkit.VCFtools import extract_lfv, build_majority_consensus, build_minor_consensus
 
-FATSA_EXTENSIONS = {'.fasta', '.fna', '.ffn', '.faa', '.frn'}
-LINE_WRAP = 80 # Max. length of each line in fasta file 
 THREADS = 2
-
-def write_fasta(vcf_path, reference, output_dir="", line_length=LINE_WRAP, **filters):
-    """
-    Writes a FASTA file with a VCF file and reference FASTA file as input.
-    """
-    # If user specifies output directory
-    if output_dir:
-
-        # Check if directory already exists
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
-
-    name = getpathleaf(vcf_path).split('.')[0]
-    path = os.path.join(output_dir, name + '.fna')
-    seq = build_consensus(vcf_path, reference, **filters)
-
-    with open(path, 'w') as f:
-        f.write(f'>{name}\n')
-        for i in range(0, len(seq), line_length):
-            f.write(seq[i: i+line_length] + '\n')
-
-'''
-path = os.path.join('example_data/mason_data')
-for f in os.listdir(path):
-    fn = os.path.join(path, f)
-    write_fasta(fn, 'example_data/sequence.fasta', output_dir='example_data/tmpdata')
-'''
 
 class FastaAligner:
     """
@@ -121,9 +92,9 @@ class MultiFastaParser:
         groups = dict()
         for record in self.records:
             if record.seq in groups:
-                groups[record.seq].add(record.name.split('.')[0])
+                groups[record.seq].add(record.name)
             else:
-                groups[record.seq] = {record.name.split('.')[0]}
+                groups[record.seq] = {record.name}
         return groups.values()
 
     def infer_phylogeny(self, output_dir='', label='tree', threads=THREADS, custom_cmd=''):
@@ -154,4 +125,4 @@ class MultiFastaParser:
         msg = f'Ran RAxML on {self.fasta} and stored files in directory: {output_dir}' + '.'
         print(msg)
 
-#data = MultiFastaParser('TransmissionViz/Parsnp/parsnp.mfa')
+
