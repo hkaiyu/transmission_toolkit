@@ -1,8 +1,18 @@
 # Ignore fasta files
 *.fasta
 
-# Ignore example_data directory
+# Ignore data directories
 example_data
+demo
+denmark_amplicon
+denmark_amplicon_no_ref
+testTransmission
 
-# Ignore config. folder
+# Ignore config. folders
 .vscode
+build
+dist
+transmission_toolkit.egg-info
+
+
+
