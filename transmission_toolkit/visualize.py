@@ -8,7 +8,6 @@ import glob
 import shutil
 
 #Third party imports
-import numpy as np
 import toytree
 import toyplot
 
@@ -23,7 +22,7 @@ COLORS = [
     '#90C987', '#4EB265', '#7BAFDE', '#5289C7', '#1965B0', '#882E72'
 ]
 
-class Viz:
+class PhyloTree:
     """
     Class for visualizing phylogenies using toytree
     """
@@ -120,7 +119,6 @@ class Viz:
         # Populate matrix with data
         for i, data in enumerate(matrix_data):
             name = row_map[i]
-            print(name)
             for j, pos in column2position.items():
                 if pos in matrix_data[name]:
                     for var in matrix_data[name][pos]:
@@ -246,7 +244,7 @@ def visualize(
     a directory of VCF files and a reference genome.
 
     It should be noted that running this provides less customizablity than using the
-    Viz class methods themselves.
+    PhyloTree class methods themselves.
     '''
 
     # Check if path exists
@@ -285,7 +283,7 @@ def visualize(
 
     # Run normal tree stuff or whatever
     multifasta = os.path.join(parsnp, 'parsnp.mfa')
-    tree = Viz(rnewick)
+    tree = PhyloTree(rnewick)
     tree.color_groups(multifasta)
     tree.draw()
     tree.add_heatmap(vcfdir, height=400, width=1000)
@@ -340,7 +338,7 @@ def visualize(
         newick = os.path.join(parsnp, 'parsnp.tree')
         multifasta = os.path.join(parsnp, 'parsnp.mfa')
 
-        tree = Viz(newick)
+        tree = PhyloTree(newick)
         tree.update(node_colors=[color])
         tree.draw()
         i += 1
@@ -355,4 +353,4 @@ def visualize(
     # Get rid of tmp directory
     shutil.rmtree(tmp_path, ignore_errors=True)
 
-visualize('example_data/Denmark_WGS_47', 'example_data/sequence.fasta', output_dir='demo')
+#visualize('example_data/Denmark_WGS_47', 'example_data/sequence.fasta', output_dir='demo')
