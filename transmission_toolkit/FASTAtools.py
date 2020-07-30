@@ -95,7 +95,7 @@ class MultiFastaParser:
                 groups[record.seq].add(record.name)
             else:
                 groups[record.seq] = {record.name}
-        return groups.values()
+        return list(groups.values())
 
     def infer_phylogeny(self, output_dir='', label='tree', threads=THREADS, custom_cmd=''):
         """

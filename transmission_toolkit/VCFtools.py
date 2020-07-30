@@ -4,9 +4,9 @@ import glob
 import vcf
 from transmission_toolkit.utils import get_seq
 
-def _is_lfv(min_read_depth, max_AF, var_reads, total_reads):
+def _is_lfv(min_AF, max_AF, var_reads, total_reads):
     freq = var_reads / total_reads
-    if var_reads >= min_read_depth and freq < max_AF:
+    if min_AF <= freq < max_AF:
         return True
     return False
 
@@ -44,8 +44,8 @@ def mask_parse(masks):
 
 def extract_lfv(
     vcf_file, 
-    min_read_depth=1, 
-    max_AF=1, 
+    min_AF=1, 
+    max_AF=0, 
     parse_type='biallelic', 
     store_ref=True, 
     masks=None, 
@@ -59,7 +59,7 @@ def extract_lfv(
     #### Handle Errors #####
     PARSE_TYPES = {"biallelic", "multiallelic"}
     MASK_TYPES = {"hide", "highlight"}
-    if min_read_depth < 0 or max_AF > 1 or parse_type not in PARSE_TYPES or mask_status not in MASK_TYPES:
+    if min_AF < 0 or max_AF > 1 or parse_type not in PARSE_TYPES or mask_status not in MASK_TYPES:
         raise ValueError("Invalid input.")
     #########################
 
@@ -81,7 +81,7 @@ def extract_lfv(
             continue
 
         # If variant passes restrictions, store data
-        if _is_lfv(min_read_depth, max_AF, var_depth, raw_depth):
+        if _is_lfv(min_AF, max_AF, var_depth, raw_depth):
             if parse_type == 'biallelic':
                 _biallelic_store(lfv_data, pos, var, freq, var_depth)
             else:
@@ -94,7 +94,7 @@ def extract_lfv(
             ref = str(record.REF[0])
             
             # If ref allele passes restrictions, store the data
-            if _is_lfv(min_read_depth, max_AF, ref_depth, raw_depth):
+            if _is_lfv(min_AF, max_AF, ref_depth, raw_depth):
                 ref_data[pos] = {ref: [(ref_depth / raw_depth), ref_depth]}
 
     # If we collected reference data, update lfv_data
@@ -109,8 +109,7 @@ def extract_lfv(
 
 def build_majority_consensus(
     vcf_file, 
-    reference,  
-    store_ref=True, 
+    reference, 
     masks=None, 
     mask_status='hide'
     ):
@@ -121,10 +120,10 @@ def build_majority_consensus(
     consensus = list(get_seq(reference))
     variants = extract_lfv(
         vcf_file, 
-        min_read_depth=1, 
+        min_AF=0, 
         max_AF=1, 
         parse_type='biallelic', 
-        store_ref=store_ref, 
+        store_ref=True, 
         masks=None, 
         mask_status='hide'
     )
@@ -149,9 +148,8 @@ def build_majority_consensus(
 def build_minor_consensus(
     vcf_file, 
     reference, 
-    min_read_depth=1, 
-    max_AF=1, 
-    store_ref=True, 
+    min_AF=0, 
+    max_AF=1,  
     masks=None, 
     mask_status='hide'
     ):
@@ -161,10 +159,10 @@ def build_minor_consensus(
     consensus = list(get_seq(reference))
     data = extract_lfv(
         vcf_file, 
-        min_read_depth=min_read_depth, 
+        min_AF=min_AF, 
         max_AF=max_AF, 
         parse_type='multiallelic', 
-        store_ref=store_ref, 
+        store_ref=True, 
         masks=None, 
         mask_status='hide'
     )
@@ -174,19 +172,17 @@ def build_minor_consensus(
     for pos in data:
         highest_freq = 0
         max_freq = max([data[pos][var][0] for var in data[pos]])
+        kept_var = None
         for var in data[pos]:
             freq = data[pos][var][0]
             if freq > highest_freq and freq != max_freq:
                 highest_freq = data[pos][var][0]
                 kept_var = var
-        variants[pos] = str(kept_var)
+        if kept_var:
+            variants[pos] = str(kept_var)
 
     for pos in variants:
         consensus[pos - 1] = variants[pos]
 
     return ''.join(consensus)
 
-
-#data = VCFtools('example_data/test1.vcf')
-#print(data.extract_lfv(store_reference=False))
-#print(data.build_consensus('example_data/testref.fasta'))

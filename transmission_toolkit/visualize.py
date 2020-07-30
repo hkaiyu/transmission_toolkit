@@ -13,7 +13,7 @@ import toyplot
 
 # Local imports
 from transmission_toolkit.FASTAtools import FastaAligner, MultiFastaParser
-from transmission_toolkit.convertFile import vcf2fasta, root_newick
+from transmission_toolkit.convertFile import vcf2fasta
 from transmission_toolkit.utils import getpathleaf
 from transmission_toolkit.VCFtools import extract_lfv
 
@@ -26,21 +26,25 @@ class PhyloTree:
     """
     Class for visualizing phylogenies using toytree
     """
-    def __init__(self, newick, colors=COLORS):
+    def __init__(self, newick, root=None, colors=COLORS):
         tree = toytree.tree(newick, tree_format=1)
         self.tree = tree
+        self.colors = colors
+        if root:
+            self.remove_node(root)
         default_style = {
             'layout': 'r',
             'edge_type': 'p',
             'tip_labels_align': True,
             'node_labels': False,
-            'node_sizes': [0 if i else 8 for i in tree.get_node_values(None, 1, 0)],
+            'node_sizes': [0 if i else 8 for i in self.tree.get_node_values(None, 1, 0)],
+            'node_colors': '#FFFAFA',
             'node_style': {
                 'stroke': 'black'
+            },
         }
-    }
         self.style = default_style
-        self.colors = colors
+        
     
     def update(self, **kwargs):
         static_attributes = {'layout', 'node_sizes'}
@@ -49,6 +53,9 @@ class PhyloTree:
                 raise ValueError(f'Cannot change attribute: {key}.')
         self.style.update(kwargs)
     
+    def remove_node(self, node):
+        self.tree = self.tree.drop_tips(wildcard=node)
+
     def color_groups(self, multifasta):
         # Parse data and group records with same sequence
         data = MultiFastaParser(multifasta)
@@ -80,11 +87,12 @@ class PhyloTree:
         position_range=None, 
         width=1000, 
         height=450, 
-        min_read_depth=1, 
-        store_ref=True, 
+        min_AF=0, 
         masks=None, 
         mask_status='hide',
-        filter_columns=True
+        filter_columns=True,
+        store_ref=False,
+        variant_type='major'
     ):
         if position_range and not isinstance(position_range, tuple):
             raise TypeError("position_range parameter must be a tuple.")
@@ -97,9 +105,9 @@ class PhyloTree:
             path = os.path.join(vcf_dir, fname)
             data = extract_lfv(
                 path, 
-                min_read_depth=min_read_depth, 
+                min_AF=min_AF, 
                 max_AF=1,
-                parse_type='biallelic',
+                parse_type='multiallelic',
                 store_ref=store_ref, 
                 masks=masks, 
                 mask_status=mask_status
@@ -107,7 +115,6 @@ class PhyloTree:
             for pos in data:
                 variant_pos.add(pos)
             matrix_data[fname.split('.')[0]] = data
-
         variant_pos = sorted(variant_pos)
 
         # Create matrix and keep track of which row carries which file's data
@@ -119,6 +126,8 @@ class PhyloTree:
         # Populate matrix with data
         for i, data in enumerate(matrix_data):
             name = row_map[i]
+            if name[0] == "'":
+                name = name[1:]
             for j, pos in column2position.items():
                 if pos in matrix_data[name]:
                     for var in matrix_data[name][pos]:
@@ -161,17 +170,17 @@ class PhyloTree:
     
         rows = len(matrix)
         cols = len(matrix[0])
+
         if cols == 0:
             raise IOError('There are no variants to make a heatmap in given VCF files.')
-        
+
         # create a canvas
-        self.canvas = toyplot.Canvas(width=width, height=height);
+        canvas = toyplot.Canvas(width=width, height=height);
 
         # add tree 
         tree_bounds = ('1%', '20%', '15%', '75%')
-        axes = self.canvas.cartesian(bounds=tree_bounds)
+        axes = canvas.cartesian(bounds=tree_bounds)
         self.tree.draw(axes=axes, tip_labels=False, **self.style)
-        
         
         colormap = toyplot.color.brewer.map("BlueRed", domain_min=0, domain_max=1)
 
@@ -179,7 +188,7 @@ class PhyloTree:
         matrix_bounds = ('21%', '88%', '6%', '84%')
         tlocator = toyplot.locator.Explicit(range(cols), position_labels)
         rlocator = toyplot.locator.Explicit(range(rows), self.tree.get_tip_labels()[::-1])
-        table = self.canvas.matrix(
+        canvas.matrix(
             (matrix, colormap),
             tshow=True,
             tlabel='Variant Positions',
@@ -189,12 +198,11 @@ class PhyloTree:
             rlocator=rlocator,
             tlocator=tlocator
         )
-        
+        # add the color scale, maybe should make this optional
         xmax_range = .95 * width
         ymax_range = .8 * height
         ymin_range = .1 * height
-        
-        scale = self.canvas.color_scale(
+        canvas.color_scale(
                 colormap=colormap,
                 x1=xmax_range,
                 y1=ymax_range,
@@ -210,19 +218,21 @@ class PhyloTree:
         # hide axes coordinates
         axes.show = False
 
+        return canvas
+
     def draw(self):
-        self.tree.draw(**self.style)
+        return self.tree.draw(**self.style)
     
-    def save(self, output, render_type='html'):
+    def save(self, canvas, output, render_type='html'):
         if render_type=='svg':
             import toyplot.svg
-            toyplot.svg.render(self.canvas, output)
+            toyplot.svg.render(canvas, output)
         elif render_type=='pdf':
             import toyplot.pdf
-            toyplot.pdf.render(self.canvas, output)
+            toyplot.pdf.render(canvas, output)
         elif render_type=='html':
             import toyplot
-            toyplot.html.render(self.canvas, output)
+            toyplot.html.render(canvas, output)
         else:
             raise ValueError('Invalid render type.')
 
@@ -233,11 +243,10 @@ def visualize(
     output_dir='TransmissionViz', 
     render_type='html', 
     threads=2,
-    min_read_depth=1,
-    parse_type='biallelic',
-    store_ref=True,
+    min_AF=0,
     masks=None,
-    mask_status='hide'
+    mask_status='hide',
+    position_range=None
     ):
     '''
     Function that generates figures on the full tree and subtree phylogenies given
@@ -265,10 +274,9 @@ def visualize(
             fp, 
             ref, 
             output_dir=tmp_path,
-            min_read_depth=min_read_depth,
+            min_AF=min_AF,
             max_AF=1,
-            parse_type=parse_type,
-            store_ref=store_ref,
+            parse_type='biallelic',
             masks=masks,
             mask_status=mask_status,
         )
@@ -278,37 +286,40 @@ def visualize(
     tmpdata = FastaAligner(tmp_path)
     tmpdata.align(ref, output_dir=parsnp)
     newick = os.path.join(parsnp, 'parsnp.tree')
-    root_newick(newick, os.path.join(parsnp, 'rparsnp.tree'))
-    rnewick = os.path.join(parsnp, 'rparsnp.tree')
+
+    # Parse multifasta
+    multifasta = os.path.join(parsnp, 'parsnp.mfa')
+    seqs = MultiFastaParser(multifasta)
+    refname = seqs.records[0].name #assumes ref seq is first record in multifasta (is the case w/ parsnp)
 
     # Run normal tree stuff or whatever
-    multifasta = os.path.join(parsnp, 'parsnp.mfa')
-    tree = PhyloTree(rnewick)
+    tree = PhyloTree(newick, root=refname)
     tree.color_groups(multifasta)
-    tree.draw()
-    tree.add_heatmap(vcfdir, height=400, width=1000)
-    tree.save(os.path.join(output_dir, 'full_phylogeny.' + render_type))
+    fig = tree.draw()[0]
+    tree.save(fig,os.path.join(output_dir, 'full_tree.' + render_type))
+    tree_fig = tree.add_heatmap(vcfdir, height=400, width=1000, position_range=position_range, min_AF=min_AF)
+    tree.save(tree_fig, os.path.join(output_dir, 'full_tree_heatmap.' + render_type))
 
     # store colors assigned
     assigned_colors = tree.group_colors
 
     # Group vcf files into list of groups
-    data = MultiFastaParser(multifasta)
-    old_groups = list(data.get_groups())
+    old_groups = list(seqs.get_groups())
     groups = list()
-    refname = data.records[0].name
     for group in old_groups:
         if refname in group:
             group.remove(refname)
-        if len(group) >= 2:
+        if len(group) > 2:
             groups.append(group)
             
-    dir_map = {name.split('.')[0]: name for name in os.listdir(vcfdir)}
+    dir_map = {name.split('.')[0]: name for name in os.listdir(vcfdir)} #maps nodes back to vcf files
+
+    # For each subgroup, generate subtree heatmap figure
     i = 1
     for group in groups:
         group_dir = os.path.join(output_dir, f'group_{i}')
         group_tmp = os.path.join(group_dir, 'tmp')
-        tmp_vcf = os.path.join(group_tmp, 'vcf')
+        tmp_vcf = os.path.join(group_dir, 'vcf')
         os.mkdir(group_dir)
         os.mkdir(group_tmp)
         os.mkdir(tmp_vcf)
@@ -322,10 +333,9 @@ def visualize(
                 vcfpath, 
                 ref, 
                 output_dir=group_tmp, 
-                min_read_depth=min_read_depth, 
+                min_AF=0, 
                 max_AF=1, 
-                parse_type=parse_type, 
-                store_ref=store_ref, 
+                parse_type='biallelic',
                 masks=masks, 
                 mask_status=mask_status,
                 consensus_type='minor'
@@ -337,20 +347,31 @@ def visualize(
 
         newick = os.path.join(parsnp, 'parsnp.tree')
         multifasta = os.path.join(parsnp, 'parsnp.mfa')
+        seqs = MultiFastaParser(multifasta)
+        refname = seqs.records[0].name #assumes ref seq is first record in multifasta (is the case w/ parsnp)
 
-        tree = PhyloTree(newick)
-        tree.update(node_colors=[color])
+        tree = PhyloTree(newick, root=refname)
+        tree.update(node_colors=color)
         tree.draw()
-        i += 1
+
         try:
-            tree.add_heatmap(tmp_vcf, height=400, width=1000, filter_columns=False)
-        except:
-            print('Cannot make heatmap... continue!')
+            heatmap_fig = tree.add_heatmap(
+                tmp_vcf, 
+                height=450, 
+                width=1250, 
+                position_range=position_range, 
+                filter_columns=True,
+                store_ref=False,
+                variant_type='minor'
+            )
+        except IOError:
+            print('Not enough variants to make heatmap... continue!')
+            i += 1
             continue
-        tree.save(os.path.join(output_dir, f'subtree_heatmap{i}.' + render_type))
+
+        tree.save(heatmap_fig, os.path.join(group_dir, f'subtree_heatmap{i}.' + render_type))
         shutil.rmtree(group_tmp, ignore_errors=True)
+        i += 1
 
     # Get rid of tmp directory
     shutil.rmtree(tmp_path, ignore_errors=True)
-
-#visualize('example_data/Denmark_WGS_47', 'example_data/sequence.fasta', output_dir='demo')
